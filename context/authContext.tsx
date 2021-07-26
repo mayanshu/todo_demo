@@ -3,10 +3,9 @@ import useFirebaseAuth from '../lib/auth';
 import firebase from '../lib/firebase';
 
 const authUserContext = createContext({
-  authUser: firebase.User,
+  authUser: firebase.app().auth().currentUser,
   loading: true,
-  signInWithEmailAndPassword: (email: string, password: string) => {},
-  createUserWithEmailAndPassword: (email: string, password: string) => {},
+  signInWithEmailAndPassword: async (email: string, password: string) => false,
   signOut: async () => {},
 });
 

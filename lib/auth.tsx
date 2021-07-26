@@ -22,10 +22,10 @@ export default function useFirebaseAuth() {
   };
 
   const signInWithEmailAndPassword = (email:string, password:string) =>
-    firebase.auth().signInWithEmailAndPassword(email, password).then((res) => res);
+    firebase.auth().signInWithEmailAndPassword(email, password).then(() => true);
 
   const createUserWithEmailAndPassword = (email:string, password:string) =>
-    firebase.auth().createUserWithEmailAndPassword(email, password).then((res) => res);
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(() => true);
 
   const signOut = () =>
     firebase.auth().signOut().then(clear);

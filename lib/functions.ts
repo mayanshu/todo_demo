@@ -9,7 +9,7 @@ export const authRef = (id:string) => {
   };
 
 export const query = ({ collection, orderBy = null, startAt = null, limit = 20, where }:any = {}) => {
-    let ref = db.collection(collection);
+    let ref: firebase.firestore.Query<firebase.firestore.DocumentData> = db.collection(collection);
     if (startAt !== null) ref = ref.startAt(startAt);
     if (limit !== null) ref = ref.limit(limit);
     if (orderBy !== null) {

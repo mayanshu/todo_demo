@@ -19,33 +19,19 @@ export default function Home() {
   const [password, setPassword] = useState<string|"">("");
   const [error, setError] = useState<string|null>(null);
   const router = useRouter();
-  const { authUser, signInWithEmailAndPassword, createUserWithEmailAndPassword } = useAuth();
+  const { authUser, signInWithEmailAndPassword } = useAuth();
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setError(null)
-    signInWithEmailAndPassword(email, password)
-    .then(res => {
+    await signInWithEmailAndPassword(email, password)
+    .then(() => {
       setError(null)
-      console.log("Success. The user is created in firebase")
       router.push('/landing');
     })
-    .catch(error => {
-      setError(error.message)
+    .catch((error: any) => {
+      setError(error?.message)
     });
   };
-
-  function Alert() {
-    const [open, setOpen] = React.useState(false);
-  
-    return (
-      <>
-        <Snackbar
-          open
-          message={error}
-        />
-      </>
-    );
-  }
 
   return (
     <div className={styles.container}>

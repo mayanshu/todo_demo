@@ -9,14 +9,17 @@ import { Checkbox } from "@rmwc/checkbox";
 import {IconButton} from "@rmwc/icon-button";
 
 type TodoItem = {
+    id: string
     createdAt: Date // the date and time the todo was created
     isComplete: boolean
     owner: string // the UID of the user who created it
     title: string
 }
-
-export default function SingleItem ({ data, deleteItem }): any {
-
+interface func {
+    data: TodoItem;
+    deleteItem: (id:string) => {};
+}
+export default function SingleItem ({ data, deleteItem }: func) {
     const [isCompleted, setIsCompleted] = useState<boolean>(data.isComplete);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [addTask, setAddTask] = useState<string>(data.title);

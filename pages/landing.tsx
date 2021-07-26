@@ -16,6 +16,7 @@ import {List} from '@rmwc/list';
 import { Snackbar, SnackbarAction } from '@rmwc/snackbar';
 
 type TodoItem = {
+    id: string
     createdAt: Date // the date and time the todo was created
     isComplete: boolean
     owner: string // the UID of the user who created it
@@ -40,7 +41,7 @@ export default function Landing() {
     const todoToServer = {
       createdAt: new Date(),
       isComplete: false,
-      owner: authUser.uid,
+      owner: authUser?.uid,
       title: addTask,
     };
     await saveData({ collection: 'todos', data: todoToServer }).then((response:any) => {
@@ -70,11 +71,11 @@ export default function Landing() {
   // To fetch TODOS data
   useEffect(() => {
     async function fetchTodosData() {
-      let todos: any [] = await getCollectionData({
+      let todos:Array<any> = await getCollectionData({
         collection: 'todos',
         where: { field: 'owner', op: '==', value: authUser?.uid },
         orderBy: { field: 'createdAt', op: 'asc'}
-      });
+      }) as any[];
       todos = todos.map((todo) => {
         return { ...todo };
       });
@@ -82,7 +83,7 @@ export default function Landing() {
       setUserTodos(todos);
     }
     if (authUser !== null) fetchTodosData();
-  }, [authUser?.uid]);
+  }, [authUser, authUser?.uid]);
 
     return(
         <div>
