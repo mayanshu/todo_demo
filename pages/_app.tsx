@@ -18,6 +18,7 @@ import '@material/drawer/dist/mdc.drawer.css';
 import '@material/list/dist/mdc.list.css';
 import '@material/checkbox/dist/mdc.checkbox.css';
 import '@material/icon-button/dist/mdc.icon-button.css';
+import '@material/card/dist/mdc.card.css';
 
 function MyApp({ Component, pageProps }: any) {
   return <AuthUserProvider><Component {...pageProps} /></AuthUserProvider>

@@ -1,20 +1,30 @@
 .container {
-  min-height: 100vh;
-  padding: 0 0.5rem;
+  min-height: 97vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  background: #F0C27B;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #4B1248, #F0C27B);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #4B1248, #F0C27B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 .main {
-  padding: 5rem 0;
+  margin: 5rem 0;
+  width: 40%;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: #eee;
+  box-shadow: 0px 8px 8px -4px lightblue;
+  border-radius: 15px;
+}
+
+.loginTxt {
+  font-family: 'Poppins', sans-serif;
 }
 
 .footer {
@@ -120,6 +130,9 @@
   }
 }
 
+.textBox {
+  width: 55%;
+}
 
 .textBoxMargin {
   margin-bottom: 5%;
@@ -154,4 +167,43 @@
 
 .mdc-list-item__meta {
   display: flex !important;
+}
+
+.loginButton {
+  width: 80%;
+  border-radius: 30px;
+}
+
+.btn_hover {
+  width: 200px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  height: 55px;
+  text-align:center;
+  border: none;
+  background-size: 300% 100%;
+
+  border-radius: 50px;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+.btn_hover:hover {
+  background-position: 100% 0;
+  -o-transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  transition: all .4s ease-in-out;
+}
+
+.btn_hover:focus {
+  outline: none;
+}
+
+.btn_hover.color {
+  background-image: linear-gradient(to right, #6253e1, #852D91, #A3A1FF, #F24645);
+  box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
 }
