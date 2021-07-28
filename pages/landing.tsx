@@ -113,7 +113,7 @@ export default function Landing() {
               <DataTable style={{ width: '100%', backgroundColor: '#eee' }}>
                 <DataTableContent>
                   <DataTableHead>
-                    <DataTableRow>
+                    <DataTableRow style={{backgroundColor: '#F0C27B'}}>
                       <DataTableHeadCell alignStart>Tasks</DataTableHeadCell>
                       <DataTableHeadCell alignMiddle>Description</DataTableHeadCell>
                       <DataTableHeadCell alignEnd style={{ paddingRight: '32px' }}>Actions</DataTableHeadCell>

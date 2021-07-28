@@ -55,6 +55,12 @@ export default function SingleItem ({ data, deleteItem }: func) {
         handleAddTodo();
       }
 
+      const handleDeleteClick = async () => {
+        deleteItem(detail.id);
+        setIsDelete(false);
+        setOpenView(false);
+      }
+
     useEffect(() => {
         setIsCompleted(data.isComplete);
         setAddTask(data.title);
@@ -100,8 +106,8 @@ export default function SingleItem ({ data, deleteItem }: func) {
                         </div>
                       </DataTableCell>
                     </DataTableRow> 
-                    {isEdit && <TaskEditDialog data={data} open={isEdit} setOpen={setIsEdit} setdata={setDetail} />}
-                    {openView && <TaskDialog data={data} open={openView} setOpen={setOpenView} />}
+                    {isEdit && <TaskEditDialog data={detail} open={isEdit} setOpen={setIsEdit} setdata={setDetail} />}
+                    {openView && <TaskDialog data={detail} open={openView} setOpen={setOpenView} setdata={setDetail} deleteData={handleDeleteClick} />}
         </>
     )
 }

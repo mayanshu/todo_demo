@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { deleteDocument, saveData } from '../lib/functions';
 import { useAuth } from '../context/authContext';
 import clsx from 'clsx';
+import TaskEditDialog from './task_edit_dialog';
 
 import { TextField } from '@rmwc/textfield';
 import { List, ListItem, ListDivider, ListItemMeta } from "@rmwc/list";
@@ -24,13 +25,23 @@ interface func {
     data: TodoItem;
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<any>>;
+    setdata: (obj:TodoItem) => void;
+    deleteData: () => void
 }
-export default function TaskDialog ({ data, open, setOpen }: func) {
+export default function TaskDialog ({ data, open, setOpen, setdata, deleteData }: func) {
     
     const { authUser, loading, signOut } = useAuth();
+    const [isCompleted, setIsCompleted] = useState<boolean>(data.isComplete);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
     const [isDelete, setIsDelete] = useState<boolean>(false);
     const [title, setTitle] = useState<string>("");
     const [desc, setDesc] = useState<string>("");
+    const [det, setDet] = useState<TodoItem>(data);
+
+    const handleEditChange = (detail:TodoItem) => {
+        setDet(detail);
+        setdata(detail);
+    }
 
     return (
         <>        
@@ -45,17 +56,43 @@ export default function TaskDialog ({ data, open, setOpen }: func) {
                 <DialogTitle style={{minWidth: '40vw'}}>
                 <div style={{display: 'inline-flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
                     <Typography use={'headline6'}> Todo Task Details </Typography>
-                    <IconButton style={{float:'right'}} icon="/cancel_black.svg" onClick={() => {setOpen(false)}} />
+                    <div>
+                        {!det.isComplete && (
+                            <>
+                                <IconButton icon="/edit_black.svg" onClick={() => setIsEdit(!isEdit)} />
+                                <IconButton icon="/delete_black.svg" onClick={() => setIsDelete(true)} /> 
+                            </>
+                         )}
+                        <IconButton style={{float:'right'}} icon="/cancel_black.svg" onClick={() => {setOpen(false)}} />
+                    </div>
                     </div>
                 </DialogTitle>
                 <DialogContent>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', whiteSpace: 'pre-line'}}>
-                    <Typography style={{paddingBottom: '5px'}} use="headline5"><b>Title:</b> {data.title}</Typography>
-                    <Typography style={{paddingBottom: '5px'}} use="subtitle2"><b>Description:</b> {data.desc}</Typography>
-                    <Typography style={{paddingBottom: '5px'}} use="subtitle2"><b>Is Marked Completed:</b> {data.isComplete ? 'True' : 'false'}</Typography>
+                    <Typography style={{paddingBottom: '5px'}} use="headline5"><b>Title:</b> {det.title}</Typography>
+                    <Typography style={{paddingBottom: '5px'}} use="subtitle2"><b>Description:</b> {det.desc}</Typography>
+                    <Typography style={{paddingBottom: '5px'}} use="subtitle2"><b>Is Marked Completed:</b> {det.isComplete ? 'Yes' : 'No'}</Typography>
                 </div>
                 </DialogContent>
             </Dialog>  
+            <Dialog
+                                    open={isDelete}
+                                    onClose={evt => {
+                                    console.log(evt.detail.action);
+                                    setIsDelete(false);
+                                    }}
+                                    onClosed={evt => console.log(evt.detail.action)}
+                                >
+                                    <DialogTitle>Warning</DialogTitle>
+                                    <DialogContent>Do you want to delete this task?</DialogContent>
+                                    <DialogActions>
+                                    <DialogButton action="close">Cancel</DialogButton>
+                                    <DialogButton action="accept" onClick={() => deleteData()}>
+                                        Confirm
+                                    </DialogButton>
+                                    </DialogActions>
+                                </Dialog> 
+            {isEdit && <TaskEditDialog data={det} open={isEdit} setOpen={setIsEdit} setdata={handleEditChange} />}
         </>
     )
 }
