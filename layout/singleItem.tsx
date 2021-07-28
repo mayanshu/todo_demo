@@ -8,7 +8,7 @@ import TaskEditDialog from './task_edit_dialog';
 import { TextField } from '@rmwc/textfield';
 import { List, ListItem, ListDivider, ListItemMeta } from "@rmwc/list";
 import { Checkbox } from "@rmwc/checkbox";
-import {IconButton} from "@rmwc/icon-button";
+import { IconButton } from "@rmwc/icon-button";
 import { DataTable, DataTableContent, DataTableHead, DataTableRow, DataTableHeadCell, DataTableBody, DataTableCell } from '@rmwc/data-table';
 import { Dialog, DialogTitle, DialogContent, DialogActions, DialogButton } from "@rmwc/dialog";
 import { Typography } from 'rmwc';
@@ -24,9 +24,11 @@ type TodoItem = {
 }
 interface func {
     data: TodoItem;
-    deleteItem: (id:string) => {};
+    deleteItem: (id: string) => {};
 }
-export default function SingleItem ({ data, deleteItem }: func) {
+
+//Single row component to be slotted for every task entry
+export default function SingleItem({ data, deleteItem }: func) {
     const [isCompleted, setIsCompleted] = useState<boolean>(data.isComplete);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [addTask, setAddTask] = useState<string>(data.title);
@@ -34,32 +36,33 @@ export default function SingleItem ({ data, deleteItem }: func) {
     const [openView, setOpenView] = useState<boolean>(false);
     const [detail, setDetail] = useState<TodoItem>(data);
 
+    //Updating firebase document when isComplete is trigged or Edit is completed
     const handleAddTodo = async () => {
         // setAddLoading(true);
         if (addTask.length > 0) {
-        const todoToServer = {
-          createdAt: data.createdAt,
-          isComplete: isEdit ? data.isComplete : !data.isComplete,
-          owner: data.owner,
-          title: isEdit ? addTask : data.title,
-        };
-        console.log(todoToServer, data)
-        await saveData({ collection: 'todos', data: todoToServer, id: data.id }).then((response:any) => {
-            setIsEdit(false);
-        });
-    }
-      };
-    
-      const handleCheckboxClick = async () => {
+            const todoToServer = {
+                createdAt: data.createdAt,
+                isComplete: isEdit ? data.isComplete : !data.isComplete,
+                owner: data.owner,
+                title: isEdit ? addTask : data.title,
+            };
+            await saveData({ collection: 'todos', data: todoToServer, id: data.id }).then((response: any) => {
+                setDetail(response);
+                setIsEdit(false);
+            });
+        }
+    };
+
+    const handleCheckboxClick = async () => {
         setIsCompleted(!isCompleted);
         handleAddTodo();
-      }
+    }
 
-      const handleDeleteClick = async () => {
+    const handleDeleteClick = async () => {
         deleteItem(detail.id);
         setIsDelete(false);
         setOpenView(false);
-      }
+    }
 
     useEffect(() => {
         setIsCompleted(data.isComplete);
@@ -68,46 +71,42 @@ export default function SingleItem ({ data, deleteItem }: func) {
     }, [data, data.isComplete, data.title]);
 
     return (
-        <>        
-                    <DataTableRow>
-                      <DataTableCell className={styles.titleColumn} onClick={() => setOpenView(!openView)}>
-                          {detail.title}
-                      </DataTableCell>
-                      <DataTableCell className={styles.titleColumn} onClick={() => setOpenView(!openView)} alignMiddle>
-                          {detail.desc}
-                      </DataTableCell>
-                      <DataTableCell alignEnd>
-                        <div className={styles.actionItem} style={{float: 'right'}}>
-                         <Checkbox checked={isCompleted} onClick={() => handleCheckboxClick()}/>
-                         {!isCompleted && (
-                            <>
-                                <IconButton icon="/edit_black.svg" onClick={() => setIsEdit(!isEdit)} />
-                                <IconButton icon="/delete_black.svg" onClick={() => setIsDelete(true)} />
-                         
-                                <Dialog
-                                    open={isDelete}
-                                    onClose={evt => {
-                                    console.log(evt.detail.action);
-                                    setIsDelete(false);
-                                    }}
-                                    onClosed={evt => console.log(evt.detail.action)}
-                                >
-                                    <DialogTitle>Warning</DialogTitle>
-                                    <DialogContent>Do you want to delete this task?</DialogContent>
-                                    <DialogActions>
-                                    <DialogButton action="close">Cancel</DialogButton>
-                                    <DialogButton action="accept" onClick={() => {deleteItem(detail.id), setIsDelete(false)}}>
-                                        Confirm
-                                    </DialogButton>
-                                    </DialogActions>
-                                </Dialog>  
-                            </>
-                         )}
-                        </div>
-                      </DataTableCell>
-                    </DataTableRow> 
-                    {isEdit && <TaskEditDialog data={detail} open={isEdit} setOpen={setIsEdit} setdata={setDetail} />}
-                    {openView && <TaskDialog data={detail} open={openView} setOpen={setOpenView} setdata={setDetail} deleteData={handleDeleteClick} />}
+        <>
+            <DataTableRow>
+                <DataTableCell className={styles.titleColumn} onClick={() => setOpenView(!openView)}>
+                    {detail.title}
+                </DataTableCell>
+                <DataTableCell className={styles.titleColumn} onClick={() => setOpenView(!openView)} alignMiddle>
+                    {detail.desc}
+                </DataTableCell>
+                <DataTableCell alignEnd>
+                    <div className={styles.actionItem} style={{ float: 'right' }}>
+                        <Checkbox checked={isCompleted} onClick={() => handleCheckboxClick()} />
+                        <IconButton icon="/edit_black.svg" style={{ visibility: !isCompleted ? 'visible' : 'hidden' }} onClick={() => setIsEdit(!isEdit)} />
+                        <IconButton icon="/delete_black.svg" onClick={() => setIsDelete(true)} />
+
+                        <Dialog
+                            open={isDelete}
+                            onClose={evt => {
+                                console.log(evt.detail.action);
+                                setIsDelete(false);
+                            }}
+                            onClosed={evt => console.log(evt.detail.action)}
+                        >
+                            <DialogTitle>Warning</DialogTitle>
+                            <DialogContent>Do you want to delete this task?</DialogContent>
+                            <DialogActions>
+                                <DialogButton action="close">Cancel</DialogButton>
+                                <DialogButton action="accept" onClick={() => { deleteItem(detail.id), setIsDelete(false) }}>
+                                    Confirm
+                                </DialogButton>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+                </DataTableCell>
+            </DataTableRow>
+            {isEdit && <TaskEditDialog data={detail} open={isEdit} setOpen={setIsEdit} setdata={setDetail} />}
+            {openView && <TaskDialog data={detail} open={openView} setOpen={setOpenView} setdata={setDetail} deleteData={handleDeleteClick} />}
         </>
     )
 }

@@ -21,14 +21,16 @@ export default function Home() {
   const [password, setPassword] = useState<string|"">("");
   const [error, setError] = useState<string|null>(null);
   const router = useRouter();
-  const { authUser, signInWithEmailAndPassword } = useAuth();
+  const { signInWithEmailAndPassword } = useAuth();
 
+  //Function to trigger Login  with firebase function
   const onSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError(null)
     await signInWithEmailAndPassword(email, password)
     .then(() => {
       setError(null)
+      //if successful redirect to main landing page of the site
       router.push('/landing');
     })
     .catch((error: any) => {
