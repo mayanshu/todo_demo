@@ -22,10 +22,10 @@ export default function Header ({ display } : any) {
     const [open, setOpen] = useState<boolean>(false);
     return (
         <>
-            <TopAppBar>
+            <TopAppBar style={{backgroundColor: '#910c8a'}}>
                 <TopAppBarRow>
                 <TopAppBarSection>
-                    <TopAppBarTitle>TODO LIST</TopAppBarTitle>
+                    <TopAppBarTitle>TODO LIST MANAGER</TopAppBarTitle>
                 </TopAppBarSection>
                 <TopAppBarSection alignEnd>
                     <Typography use="subtitle2">{display}</Typography>

@@ -5,8 +5,10 @@ import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router';
 import { useAuth } from '../context/authContext';
 import Header from '../layout/header';
+import TaskDialog from '../layout/task_add_dialog';
 import { saveData, getCollectionData, deleteDocument } from '../lib/functions';
 import SingleItem from '../layout/singleItem';
+import clsx from 'clsx';
 
 import { Button } from "@rmwc/button";
 import { TextField } from '@rmwc/textfield';
@@ -14,6 +16,8 @@ import { Typography } from "@rmwc/typography";
 import { Avatar } from '@rmwc/avatar';
 import {List} from '@rmwc/list';
 import { Snackbar, SnackbarAction } from '@rmwc/snackbar';
+import { Fab } from '@rmwc/fab';
+import { DataTable, DataTableContent, DataTableHead, DataTableRow, DataTableHeadCell, DataTableBody, DataTableCell } from '@rmwc/data-table';
 
 type TodoItem = {
     id: string
@@ -21,19 +25,15 @@ type TodoItem = {
     isComplete: boolean
     owner: string // the UID of the user who created it
     title: string
-
+    desc: string
 }
 export default function Landing() {
   const { authUser, loading, signOut } = useAuth();
-  const [data, setData] = useState<boolean>(false);
   const [addLoading, setAddLoading] = useState<boolean>(false);  
   const [addTask, setAddTask] = useState<string>("");
   const [userTodos, setUserTodos] = useState<Array<TodoItem>>([]);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
   const router = useRouter();
-
-  function validate () {
-
-  }
 
   const handleAddTodo = async () => {
       if (addTask.length > 0) {
@@ -49,12 +49,18 @@ export default function Landing() {
         let temp = userTodos;
         temp.push(response);
         setUserTodos(temp);
-        (document.getElementById('add-todo-input') as HTMLInputElement).value="";
         setAddTask("");
         setAddLoading(false);
     });
     }
   };
+  
+  function handleNewTask(obj:TodoItem) {
+    let temp = userTodos;
+    temp.push(obj);
+    setUserTodos(temp);
+    return true;
+  }
 
   async function handleDelete(id:string) {
     setUserTodos(userTodos.filter((todo:any) => todo.id !== id));
@@ -86,34 +92,41 @@ export default function Landing() {
   }, [authUser, authUser?.uid]);
 
     return(
-        <div>
+      <>
+      
+      <Header display={authUser?.email} />
+            <div className={styles.landingContainer}>
+            <div className={styles.listMargin}>
             <div>
-            <Header display={authUser?.email} />
-
-            <div className={styles.listMargin} style={{ minHeight: '25rem'}}>
-            <TextField
-                id="add-todo-input"
-                required 
-                className={styles.addTaskBox}
-                label="Type here to add new task to the list..."                
-                maxLength={200}
-                onChange={(e:React.ChangeEvent<HTMLInputElement>) => setAddTask(e.target.value)}
-                trailingIcon={{
-                icon: '/add_circle_outline_black.svg',
-                tabIndex: 0,
-                onClick: () => handleAddTodo()
-                }}
-            />
-            <div>
-                <List>
-                {userTodos?.map((todo, i) => {
-                    return <SingleItem data={todo} deleteItem={handleDelete} key={i} />
-                })}
-                </List>
+              {userTodos?.length > 0 ? (
+                <DataTable style={{width: '100%', backgroundColor: '#eee'}}>
+                <DataTableContent>
+                  <DataTableHead>
+                    <DataTableRow>
+                      <DataTableHeadCell alignStart>Tasks</DataTableHeadCell>
+                      <DataTableHeadCell alignEnd style={{paddingRight: '32px'}}>Actions</DataTableHeadCell>
+                    </DataTableRow>
+                  </DataTableHead>
+                  <DataTableBody>
+                    {userTodos?.map((todo, i) => {
+                      return <SingleItem data={todo} deleteItem={handleDelete} key={i} />
+                    })}
+                  </DataTableBody>
+                </DataTableContent>
+              </DataTable>
+              ) : (
+                <div className={styles.emptyTable}>
+                <Typography use="headline5">
+                  No task found, start adding task to see here
+                </Typography>
+                </div>
+              )}
             </div>
             </div>
             </div>
-        </div>
-    )
+            <Fab onClick={() => setOpenDialog(!openDialog)} className={clsx(styles.btn_hover_fab, styles.color)} style={{ display: 'flex', float: 'right'}} icon="/add_circle_outline_black.svg" />
+            {openDialog && <TaskDialog open={openDialog} setOpen={setOpenDialog} setdata={handleNewTask} />}
+            </>
+         )
 
 }

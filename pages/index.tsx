@@ -10,7 +10,6 @@ import { useAuth } from '../context/authContext';
 
 
 // import your components
-import { Button } from "@rmwc/button";
 import { TextField } from '@rmwc/textfield';
 import { Typography } from "@rmwc/typography";
 import { Snackbar, SnackbarAction } from '@rmwc/snackbar';
@@ -24,7 +23,8 @@ export default function Home() {
   const router = useRouter();
   const { authUser, signInWithEmailAndPassword } = useAuth();
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
     setError(null)
     await signInWithEmailAndPassword(email, password)
     .then(() => {
@@ -47,11 +47,13 @@ export default function Home() {
 
       <main className={styles.main}>
         <Typography className={clsx(styles.textBoxMargin, styles.loginTxt)} use="headline4">TODO Task Manager</Typography>
+        <form style={{display:'contents'}} onSubmit={(e: React.SyntheticEvent) => onSubmit(e)}>
         <TextField icon="/person_black.svg" className={clsx(styles.textBoxMargin, styles.textBox)} outlined label="Email" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}/>
         <TextField icon="/lock_black.svg" className={clsx(styles.textBoxMargin, styles.textBox)} outlined label="Password" type="password" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}/>
-        <button className={clsx(styles.loginButton, styles.btn_hover, styles.color)} onClick={() => onSubmit()} >
+        <button className={clsx(styles.loginButton, styles.btn_hover, styles.color)} type="submit" >
         LOGIN
         </button>
+        </form>
       </main>
       {error && <Snackbar
           open
