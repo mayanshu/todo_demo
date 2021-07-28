@@ -62,7 +62,7 @@ export default function TaskDialog ({ open, setOpen, setdata }: func) {
                 }}
                 onClosed={evt => console.log(evt.detail.action)}
             >
-                <DialogTitle style={{width: 'min(280px, 40vw)'}}>
+                <DialogTitle style={{width: 'min(560px, 40vw)'}}>
                     <div style={{display: 'inline-flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
                     <Typography use={'headline6'}> Add todo task </Typography>
                     <IconButton style={{float:'right'}} icon="/cancel_black.svg" onClick={() => {setOpen(false)}} />
