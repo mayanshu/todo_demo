@@ -43,14 +43,16 @@ export default function TaskDialog ({ data, open, setOpen }: func) {
                 onClosed={evt => console.log(evt.detail.action)}
             >
                 <DialogTitle style={{minWidth: '40vw'}}>
-                    Todo task Details
+                <div style={{display: 'inline-flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                    <Typography use={'headline6'}> Todo Task Details </Typography>
                     <IconButton style={{float:'right'}} icon="/cancel_black.svg" onClick={() => {setOpen(false)}} />
+                    </div>
                 </DialogTitle>
-                <DialogContent style={{textAlign: 'center'}}>
-                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
-                    <Typography style={{paddingBottom: '5px'}} use="headline5">Title: {data.title}</Typography>
-                    <Typography style={{paddingBottom: '5px'}} use="subtitle2">Description :{data.desc}</Typography>
-                    <Typography style={{paddingBottom: '5px'}} use="subtitle2">Is Marked Completed: {data.isComplete ? 'True' : 'false'}</Typography>
+                <DialogContent>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', whiteSpace: 'pre-line'}}>
+                    <Typography style={{paddingBottom: '5px'}} use="headline5"><b>Title:</b> {data.title}</Typography>
+                    <Typography style={{paddingBottom: '5px'}} use="subtitle2"><b>Description:</b> {data.desc}</Typography>
+                    <Typography style={{paddingBottom: '5px'}} use="subtitle2"><b>Is Marked Completed:</b> {data.isComplete ? 'True' : 'false'}</Typography>
                 </div>
                 </DialogContent>
             </Dialog>  

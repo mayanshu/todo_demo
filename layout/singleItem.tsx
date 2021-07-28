@@ -59,13 +59,16 @@ export default function SingleItem ({ data, deleteItem }: func) {
         setIsCompleted(data.isComplete);
         setAddTask(data.title);
         setDetail(data);
-    }, [data.isComplete, data.title]);
+    }, [data, data.isComplete, data.title]);
 
     return (
         <>        
                     <DataTableRow>
                       <DataTableCell className={styles.titleColumn} onClick={() => setOpenView(!openView)}>
                           {detail.title}
+                      </DataTableCell>
+                      <DataTableCell className={styles.titleColumn} onClick={() => setOpenView(!openView)} alignMiddle>
+                          {detail.desc}
                       </DataTableCell>
                       <DataTableCell alignEnd>
                         <div className={styles.actionItem} style={{float: 'right'}}>
@@ -84,7 +87,7 @@ export default function SingleItem ({ data, deleteItem }: func) {
                                     onClosed={evt => console.log(evt.detail.action)}
                                 >
                                     <DialogTitle>Warning</DialogTitle>
-                                    <DialogContent>Do you want to delete this task.</DialogContent>
+                                    <DialogContent>Do you want to delete this task?</DialogContent>
                                     <DialogActions>
                                     <DialogButton action="close">Cancel</DialogButton>
                                     <DialogButton action="accept" onClick={() => {deleteItem(detail.id), setIsDelete(false)}}>

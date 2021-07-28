@@ -63,13 +63,15 @@ export default function TaskDialog ({ open, setOpen, setdata }: func) {
                 onClosed={evt => console.log(evt.detail.action)}
             >
                 <DialogTitle>
-                    Add todo task
+                    <div style={{display: 'inline-flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                    <Typography use={'headline6'}> Add todo task </Typography>
                     <IconButton style={{float:'right'}} icon="/cancel_black.svg" onClick={() => {setOpen(false)}} />
+                    </div>
                 </DialogTitle>
                 <DialogContent style={{textAlign: 'center'}}>
                 <form style={{display:'contents'}} onSubmit={(e: React.SyntheticEvent) => onSubmit(e)}>
                     <TextField style={{marginTop: '10px', height: '50px', width: '100%'}} className={clsx(styles.textBoxMargin, styles.textBox)} outlined label="Task Title" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}/>
-                    <TextField style={{height: '50px', width: '100%'}} className={clsx(styles.textBoxMargin, styles.textBox)} outlined label="Task Description" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)}/>
+                    <TextField textarea rows={4} maxLength={1000} style={{ width: '100%'}} className={clsx(styles.textBoxMargin, styles.textBox)} outlined label="Task Description" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)}/>
                     <button className={clsx(styles.loginButton, styles.btn_hover, styles.color)} type="submit" >
                     SUBMIT
                     </button>

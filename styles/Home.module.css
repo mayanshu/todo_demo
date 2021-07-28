@@ -129,8 +129,8 @@
   width: 45%;
   margin: 4% 10%;
   background-color: #eee;
-  min-height: 25rem;
-  max-height: 400px;
+  height: 55vh;
+  max-height: 55vh;
   overflow-y: auto;
   border-radius: 5px;
 }
@@ -209,7 +209,7 @@
 }
 
 .titleColumn{
-  max-width: 40vw;
+  max-width: 15vw;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -253,5 +253,5 @@
   justify-content: center;
     align-items: center;
     display: flex;
-    height: 400px;
+    height: 50vh;
 }

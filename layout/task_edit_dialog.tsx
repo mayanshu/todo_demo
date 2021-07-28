@@ -68,17 +68,21 @@ export default function TaskEditDialog ({ data, open, setOpen, setdata }: func) 
                 }}
                 onClosed={evt => console.log(evt.detail.action)}
             >
-                <DialogTitle style={{minWidth: '40vw'}}>
-                    Edit todo task
+                <DialogTitle style={{width: '50vw'}}>
+                <div style={{display: 'inline-flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                    <Typography use={'headline6'}> Edit todo task </Typography>
                     <IconButton style={{float:'right'}} icon="/cancel_black.svg" onClick={() => {setOpen(false)}} />
+                    </div>
                 </DialogTitle>
                 <DialogContent style={{textAlign: 'center'}}>
                 <form style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}} onSubmit={(e: React.SyntheticEvent) => onSubmit(e)}>
                     <TextField value={title} style={{marginTop: '10px', height: '50px', width: '100%'}} className={clsx(styles.textBoxMargin, styles.textBox)} outlined label="Task Title" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}/>
-                    <TextField value={desc} style={{height: '50px', width: '100%'}} className={clsx(styles.textBoxMargin, styles.textBox)} outlined label="Task Description" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)}/>
+                    <TextField textarea rows={4} value={desc} maxLength={1000} style={{ width: '100%'}} className={clsx(styles.textBoxMargin, styles.textBox)} outlined label="Task Description" onChange={(e:React.ChangeEvent<HTMLInputElement>) => setDesc(e.target.value)}/>
+                    <div style={{width: '100%'}}>
                     <button className={clsx(styles.loginButton, styles.btn_hover, styles.color)} type="submit" >
                     SUBMIT
                     </button>
+                    </div>
                 </form>
                 </DialogContent>
             </Dialog>  

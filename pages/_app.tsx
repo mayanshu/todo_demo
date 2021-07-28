@@ -24,6 +24,7 @@ import '@material/fab/dist/mdc.fab.css';
 import '@material/data-table/dist/mdc.data-table.css';
 import '@rmwc/data-table/data-table.css';
 import '@material/dialog/dist/mdc.dialog.css';
+import '@rmwc/circular-progress/circular-progress.css';
 
 function MyApp({ Component, pageProps }: any) {
   return <AuthUserProvider><Component {...pageProps} /></AuthUserProvider>
